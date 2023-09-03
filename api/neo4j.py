@@ -10,9 +10,12 @@ Initiate the Neo4j Driver
 # tag::initDriver[]
 def init_driver(uri, username, password):
     # TODO: Create an instance of the driver here
-    current_app.driver = None
+    current_app.driver = GraphDatabase.driver(uri, auth=(username, password))
 
-    return None
+    # Verify Connectivity
+    current_app.driver.verify_connectivity()
+    
+    return current_app.driver
 # end::initDriver[]
 
 
@@ -31,7 +34,7 @@ If the driver has been instantiated, close it and all remaining open sessions
 
 # tag::closeDriver[]
 def close_driver():
-    if current_app.driver != None:
+    if current_app.driver is not None:
         current_app.driver.close()
         current_app.driver = None
 
